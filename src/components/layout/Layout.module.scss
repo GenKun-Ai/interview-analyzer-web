@@ -1,0 +1,58 @@
+// Layout 전체 컨테이너
+.layout {
+    min-height: 100vh;      // 화면 전체 높이
+    display: flex;          // Flexbox 사용
+    flex-direction: column; // 세로 배치 (Header -> Main -> Footer
+}
+
+// Header (상단)
+.header {
+    background: var(--red); // global.scss 색상 변수
+    color: white;
+    padding: 1rem 0;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+
+    .logo {
+        margin: 0;
+        font-size: 1.5rem;
+    }
+
+    nav {
+        margin-top: 0.5rem;
+
+        a {
+            color: white;
+            text-decoration: none;
+
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+    }
+}
+
+// Main (중간 - 내용)
+.main {
+    flex: 1;
+    padding: 2rem 0;
+    background: var(--beige);
+}
+
+// Foter (하단)
+.footer {
+    background: var(--black);
+    color: white;
+    padding: 1rem 0;
+    text-align: center;
+
+    p {
+        margin: 0;
+    }
+}
+
+// 컨텐츠 폭 제한
+.container {
+    max-width: 120px; // 최대 폭
+    margin: 0 auto;   // 중앙 정렬
+    padding: 0 1rem;  // 좌우 여백
+}
