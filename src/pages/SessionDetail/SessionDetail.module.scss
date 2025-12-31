@@ -1,21 +1,27 @@
 .session-detail {
-    max-width: 800px;
+    width: 100%;
+    max-width: 1400px;
     margin: 0 auto;
 
-    // 헤더
+    @media (max-width: 1024px) {
+        max-width: 100%;
+    }
+
     .header {
         display: flex;
         justify-content: space-between;
         align-items: center;
         margin-bottom: 2rem;
+        padding-bottom: 1rem;
+        border-bottom: 2px solid var(--border);
 
         h2 {
             margin: 0;
-            color: var(--black);
+            color: var(--text);
         }
 
         .delete-btn {
-            background: #c33;
+            background: var(--error);
             color: white;
             border: none;
             padding: 0.5rem 1rem;
@@ -23,12 +29,12 @@
             cursor: pointer;
 
             &:hover {
-                background: #a22;
+                opacity: 0.9;
             }
         }
     }
 
-    // 공통 카드 스타일
+    // 카드 공통 스타일
     .info-card,
     .upload-card,
     .progress-card,
@@ -36,7 +42,7 @@
     .audio-card,
     .analysis-card,
     .transcript-card {
-        background-color: white;
+        background: white;
         padding: 1.5rem;
         border-radius: 8px;
         margin-bottom: 1rem;
@@ -44,32 +50,120 @@
 
         h3 {
             margin: 0 0 1rem 0;
-            color: var(--black);
+            color: var(--text);
             font-size: 1.25rem;
         }
 
         p {
             margin: 0.5rem 0;
-            color: var(--brown);
+            color: var(--text-light);
         }
     }
 
-    // 업로드 카드
+    // 세션 정보 행
+    .info-card {
+        .info-row {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 0.75rem 0;
+
+            .label {
+                font-weight: 600;
+                color: var(--text);
+                min-width: 60px;
+            }
+
+            .status-badge {
+                display: inline-block;
+                padding: 0.25rem 0.75rem;
+                border-radius: 12px;
+                font-size: 0.875rem;
+                font-weight: 600;
+
+                &.created {
+                    background: #e5e7eb;
+                    color: #6b7280;
+                }
+
+                &.uploading,
+                &.processing,
+                &.transcribing,
+                &.analyzing {
+                    background: #dbeafe;
+                    color: #1e40af;
+                }
+
+                &.completed {
+                    background: #d1fae5;
+                    color: #059669;
+                }
+
+                &.failed {
+                    background: #fee2e2;
+                    color: #dc2626;
+                }
+            }
+        }
+    }
+
+    // 업로드
     .upload-card {
-        input[type='file'] {
-            margin-bottom: 1rem;
+        .upload-zone {
+            position: relative;
+            border: 2px dashed var(--border);
+            border-radius: 8px;
+            padding: 3rem 2rem;
+            text-align: center;
+            background: #fafafa;
+            cursor: pointer;
+            transition: all 0.2s;
+
+            &:hover {
+                border-color: var(--primary);
+                background: #f5f5f5;
+            }
+
+            &.active {
+                border-color: var(--primary);
+                background: #fff5f5;
+            }
+
+            .upload-icon {
+                font-size: 3rem;
+                margin-bottom: 1rem;
+            }
+
+            .upload-text {
+                color: var(--text-light);
+                margin: 0;
+                font-size: 0.9375rem;
+            }
+
+            .file-input {
+                position: absolute;
+                top: 0;
+                left: 0;
+                width: 100%;
+                height: 100%;
+                opacity: 0;
+                cursor: pointer;
+            }
         }
 
-        button {
-            background: var(--red);
+        .upload-btn {
+            width: 100%;
+            background: var(--primary);
             color: white;
             border: none;
             padding: 0.75rem 1.5rem;
             border-radius: 4px;
             cursor: pointer;
-            margin-top: 0.5rem;
+            margin-top: 1rem;
+            font-weight: 600;
+            font-size: 1rem;
 
-            &:hover {
+            &:hover:not(:disabled) {
                 opacity: 0.9;
             }
 
@@ -82,20 +176,148 @@
 
     // 진행률
     .progress-card {
-        progerss {
+        progress {
             width: 100%;
             height: 30px;
-            border-radius: 4px;
+        }
 
-            &::-webkit-progress-bar {
-                background: #f0f0f0;
-                border-radius: 4px;
+        p {
+            margin-top: 0.5rem;
+            text-align: center;
+            font-weight: bold;
+            color: var(--primary);
+        }
+    }
+
+    // 작업 상태 카드
+    .status-card {
+        border-left: 4px solid #3b82f6;
+
+        &.active {
+            border-left-color: #3b82f6;
+            background: #f0f9ff;
+        }
+
+        &.completed {
+            border-left-color: var(--success);
+            background: #f0fdf4;
+        }
+
+        &.failed {
+            border-left-color: var(--error);
+            background: #fef2f2;
+        }
+
+        .status-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1rem;
+
+            h3 {
+                margin: 0;
             }
 
-            &::-webkit-progress-value {
-                background: var(--red);
-                border-radius: 4px;
+            .status-badge {
+                padding: 0.25rem 0.75rem;
+                border-radius: 12px;
+                font-size: 0.875rem;
+                font-weight: 600;
+
+                &.active {
+                    background: #dbeafe;
+                    color: #1e40af;
+                }
+
+                &.completed {
+                    background: #d1fae5;
+                    color: #059669;
+                }
+
+                &.failed {
+                    background: #fee2e2;
+                    color: #dc2626;
+                }
+
+                &.waiting,
+                &.delayed,
+                &.paused {
+                    background: #fef3c7;
+                    color: #92400e;
+                }
             }
+        }
+
+        .status-info {
+            margin-bottom: 1rem;
+
+            .status-text {
+                font-size: 1rem;
+                font-weight: 500;
+                color: var(--text);
+                margin: 0;
+            }
+        }
+
+        .progress-bar-container {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+
+            .progress-bar {
+                flex: 1;
+                height: 20px;
+                background: #e5e7eb;
+                border-radius: 10px;
+                overflow: hidden;
+
+                .progress-fill {
+                    height: 100%;
+                    border-radius: 10px;
+                    transition: width 0.3s ease;
+
+                    &.active {
+                        background: linear-gradient(90deg, #3b82f6, #60a5fa);
+                        animation: pulse 2s ease-in-out infinite;
+                    }
+
+                    &.completed {
+                        background: var(--success);
+                    }
+
+                    &.failed {
+                        background: var(--error);
+                    }
+                }
+            }
+
+            .progress-text {
+                font-weight: 600;
+                color: var(--text);
+                min-width: 45px;
+                text-align: right;
+            }
+        }
+    }
+
+    @keyframes pulse {
+        0%, 100% {
+            opacity: 1;
+        }
+        50% {
+            opacity: 0.7;
+        }
+    }
+
+    // 오디오 + 자막 컨테이너
+    .media-container {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 1rem;
+        margin-bottom: 1rem;
+
+        @media (max-width: 768px) {
+            grid-template-columns: 1fr;
         }
     }
 
@@ -103,40 +325,77 @@
     .audio-card {
         audio {
             width: 100%;
-            min-width: 300px;
-            margin-top: 0.5rem;
+            margin-bottom: 1rem;
         }
 
         .playback-controls {
             display: flex;
-            align-items: center;
             gap: 0.5rem;
-            margin-top: 1rem;
             flex-wrap: wrap;
 
             .label {
                 font-weight: bold;
-                color: var(--black);
-                margin-right: 0.5rem;
+                width: 100%;
+                margin-bottom: 0.5rem;
             }
 
             .rate-btn {
                 background: white;
-                border: 2px solid var(--red);
-                color: var(--red);
+                border: 2px solid var(--primary);
+                color: var(--primary);
                 padding: 0.5rem 1rem;
                 border-radius: 4px;
                 cursor: pointer;
-                font-weight: 500;
-                transition: all 0.2s;
 
                 &:hover {
-                    background: #ffe5e5;
+                    background: var(--primary);
+                    color: white;
                 }
 
                 &.active {
-                    background: var(--red);
+                    background: var(--primary);
                     color: white;
+                }
+            }
+        }
+    }
+
+    // 자막
+    .transcript-card {
+        .transcript-list {
+            max-height: 500px;
+            overflow-y: auto;
+
+            .transcript-segment {
+                padding: 0.75rem;
+                margin-bottom: 0.5rem;
+                border-radius: 4px;
+                cursor: pointer;
+                display: flex;
+                gap: 1rem;
+                background: #f9f9f9;
+
+                &:hover {
+                    background: #f0f0f0;
+                }
+
+                &.active {
+                    background: var(--primary);
+                    color: white;
+
+                    .time {
+                        color: white;
+                    }
+                }
+
+                .time {
+                    font-weight: bold;
+                    color: var(--primary);
+                    min-width: 50px;
+                }
+
+                .text {
+                    flex: 1;
                 }
             }
         }
@@ -146,7 +405,7 @@
     .analysis-card {
         h4 {
             margin: 1rem 0 0.5rem 0;
-            color: var(--black);
+            color: var(--text);
         }
 
         ul {
@@ -155,65 +414,140 @@
 
             li {
                 margin: 0.25rem 0;
-                color: var(--brown);
+                color: var(--text-light);
             }
         }
     }
 
-    // 자막
-    .transcript-card {
-        .transcript-list {
-            max-height: 400px;
-            overflow-y: auto;
+    // 실패 카드
+    .error-card {
+        background: white;
+        padding: 2rem;
+        border-radius: 8px;
+        margin-bottom: 1rem;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        border-left: 4px solid var(--error);
 
-            .transcript-segment {
-                padding: 0.75rem;
-                margin-bottom: 0.5rem;
+        .error-header {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            margin-bottom: 1rem;
+
+            .error-icon {
+                font-size: 2rem;
+            }
+
+            h3 {
+                margin: 0;
+                color: var(--error);
+                font-size: 1.25rem;
+            }
+        }
+
+        .error-description {
+            color: var(--text);
+            line-height: 1.6;
+            margin: 1rem 0 1.5rem 0;
+            padding: 1rem;
+            background: #fef2f2;
+            border-radius: 4px;
+            border: 1px solid #fecaca;
+        }
+
+        .error-actions {
+            display: flex;
+            gap: 1rem;
+            flex-wrap: wrap;
+
+            .retry-btn,
+            .back-btn {
+                padding: 0.75rem 1.5rem;
                 border-radius: 4px;
                 cursor: pointer;
-                transition: background-color 0.2s;
-                display: flex;
-                gap: 1rem;
+                font-weight: 600;
+                font-size: 0.9375rem;
+                border: none;
+                transition: all 0.2s;
 
                 &:hover {
-                    background-color: #f5f5f5;
+                    transform: translateY(-2px);
                 }
+            }
 
-                &.active {
-                    background-color: var(--red);
-                    color: white;
+            .retry-btn {
+                background: var(--primary);
+                color: white;
 
-                    .time {
-                        color: white;
-                    }
+                &:hover {
+                    opacity: 0.9;
                 }
+            }
 
-                .time {
-                    flex-shrink: 0;
-                    font-weight: bold;
-                    color: var(--red);
-                    min-width: 50px;
-                }
+            .back-btn {
+                background: white;
+                color: var(--text);
+                border: 2px solid var(--border);
 
-                .text {
-                    flex: 1;
-                    line-height: 1.5;
+                &:hover {
+                    border-color: var(--text-light);
                 }
             }
         }
     }
 
-    // 로딩 /에러
-    .loading,
-    .error {
+    // 로딩
+    .loading {
         text-align: center;
-        padding: 3rem;
+        padding: 2rem;
         background: white;
         border-radius: 8px;
-        color: var(--brown);
     }
 
-    .error {
-        color: #c33;
+    // 에러 컨테이너
+    .error-container {
+        text-align: center;
+        padding: 3rem 2rem;
+        background: white;
+        border-radius: 8px;
+        box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        max-width: 600px;
+        margin: 2rem auto;
+
+        .error-icon {
+            font-size: 4rem;
+            margin-bottom: 1rem;
+        }
+
+        h3 {
+            color: var(--text);
+            margin: 1rem 0;
+            font-size: 1.5rem;
+        }
+
+        .error-message {
+            color: var(--error);
+            margin: 1rem 0;
+            font-size: 1rem;
+            line-height: 1.5;
+        }
+
+        .retry-btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 0.75rem 2rem;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 1rem;
+            margin-top: 1rem;
+            transition: all 0.2s;
+
+            &:hover {
+                opacity: 0.9;
+                transform: translateY(-2px);
+            }
+        }
     }
 }

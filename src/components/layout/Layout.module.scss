@@ -1,58 +1,78 @@
-// Layout 전체 컨테이너
 .layout {
-    min-height: 100vh;      // 화면 전체 높이
-    display: flex;          // Flexbox 사용
-    flex-direction: column; // 세로 배치 (Header -> Main -> Footer
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
 }
 
-// Header (상단)
 .header {
-    background: var(--red); // global.scss 색상 변수
-    color: white;
-    padding: 1rem 0;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    background: white;
+    color: var(--text);
+    padding: 1rem;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
+    border-bottom: 2px solid var(--primary-light);
+
+    .container {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+    }
 
     .logo {
-        margin: 0;
-        font-size: 1.5rem;
+        display: inline-block;
+
+        img {
+            height: 70px;
+            width: auto;
+            display: block;
+            object-fit: contain;
+
+            @media (max-width: 768px) {
+                height: 55px;
+            }
+        }
     }
 
     nav {
-        margin-top: 0.5rem;
-
         a {
-            color: white;
+            color: var(--text);
             text-decoration: none;
+            padding: 0.5rem 1rem;
+            font-weight: 500;
+            transition: color 0.2s;
 
             &:hover {
-                text-decoration: underline;
+                color: var(--primary);
             }
         }
     }
 }
 
-// Main (중간 - 내용)
 .main {
     flex: 1;
-    padding: 2rem 0;
-    background: var(--beige);
+    padding: 2rem 1rem;
 }
 
-// Foter (하단)
 .footer {
-    background: var(--black);
+    background: #333;
     color: white;
-    padding: 1rem 0;
+    padding: 1rem;
     text-align: center;
 
     p {
         margin: 0;
+        font-size: 0.875rem;
     }
 }
 
-// 컨텐츠 폭 제한
 .container {
-    max-width: 120px; // 최대 폭
-    margin: 0 auto;   // 중앙 정렬
-    padding: 0 1rem;  // 좌우 여백
+    width: 100%;
+    padding: 0 2rem;
+
+    @media (max-width: 1024px) {
+        padding: 0 1.5rem;
+    }
+
+    @media (max-width: 768px) {
+        padding: 0 1rem;
+    }
 }
