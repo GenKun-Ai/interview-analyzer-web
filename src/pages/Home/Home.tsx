@@ -65,15 +65,34 @@ export const Home = () => {
                     <div
                         key={session.id}
                         className={cx('session-item')}
+                        data-status={session.status}
                         onClick={() => navigate(`/session/${session.id}`)}
                     >
-                        <h3>{session.description}</h3>
-                        <p>상태 : {session.status}</p>
-                        <p>언어 : {session.language}</p>
-                        <p>생성 : {session.createAt
-                            ? new Date(session.createAt).toLocaleString('ko-KR')
-                            : '-'
-                        }</p>
+                        <h3>
+                            {session.description || '세션'}
+                            <span className={cx('status-badge', session.status.toLowerCase())}>
+                                {session.status}
+                            </span>
+                        </h3>
+                        <ul className={cx('info-list')}>
+                            <li>
+                                <strong>언어:</strong>
+                                <span>{session.language === 'ko' ? '한국어' : '日本語'}</span>
+                            </li>
+                            <li>
+                                <strong>생성:</strong>
+                                <span>{session.createAt
+                                    ? new Date(session.createAt).toLocaleString('ko-KR')
+                                    : '-'
+                                }</span>
+                            </li>
+                            {session.audioDuration && (
+                                <li>
+                                    <strong>길이:</strong>
+                                    <span>{session.audioDuration}</span>
+                                </li>
+                            )}
+                        </ul>
                     </div>
                 ))}
             </div>
