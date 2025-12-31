@@ -14,9 +14,9 @@ function App() {
           {/* 홈 페이지 */}
           <Route index element={<Home />} />
 
-          {/* 세션 상세 페이지 (추후 추가) */}
+          {/* 세션 상세 페이지 */}
           <Route path="session/:id" element={<SessionDetail />} /> 
-          
+
           {/* 404 - 존재하지 않는 경로 */}
           <Route path="*" element={<Navigate to="/" replace />} />
         </Route>

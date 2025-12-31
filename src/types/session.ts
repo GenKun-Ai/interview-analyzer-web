@@ -59,7 +59,7 @@ export interface QuestionResponsePair {
 export interface StructuralAnalysis {
     questionResponsePairs: QuestionResponsePair[];
     appropriatenessScore: number;
-    keywordMatches: string[]; // 백엔드에서 문자열 배열로 옴
+    keywordMatches: string[]; 
 }
 
 export interface SilencePeriod {
