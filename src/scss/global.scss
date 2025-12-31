@@ -1,8 +1,37 @@
-@charset "utf-8"
+@charset "utf-8";
 
+/* 기본 색상 - 로고 계열 (민트 + 네이비) */
 :root {
-    --red: #ea7664;
-    --black: #544f4f;
-    --brown: #98757a;
-    --beige: #f6f5f5;
+    /* 메인 컬러 - 민트/틸 */
+    --primary: #14b8a6;
+    --primary-light: #5eead4;
+    --primary-dark: #0d9488;
+
+    /* 헤더 - 딥 네이비 */
+    --header-bg: #0f172a;
+    --header-text: #f8fafc;
+
+    /* 상태 색상 */
+    --success: #10b981;
+    --warning: #f59e0b;
+    --error: #ef4444;
+    --info: #06b6d4;
+
+    /* 텍스트 & 배경 */
+    --text: #1e293b;
+    --text-light: #64748b;
+    --bg: #f8fafc;
+    --border: #e2e8f0;
+}
+
+/* 전역 스타일 */
+* {
+    box-sizing: border-box;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    color: var(--text);
+    background: var(--bg);
 }
