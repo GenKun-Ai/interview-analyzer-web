@@ -16,7 +16,9 @@ export const Layout = () => {
 
         <header className={cx("header")}>
           <div className={cx("container")}>
-            <h1 className={cx("logo")}>Genkun</h1>
+            <a href="/" className={cx("logo")}>
+              <img src="/assets/genkun.png" alt="Genkun" />
+            </a>
             <nav>
               <a href="/">세션 목록</a>
             </nav>
@@ -29,7 +31,7 @@ export const Layout = () => {
             <Outlet />
           </div>
         </main>
-        
+
         {/* Footer */}
         <footer className={cx("footer")}>
           <div className={cx("container")}>
