@@ -1,146 +1,155 @@
-# GenKun Frontend
+# 言君(GenKun) フロントエンド
 
-> AI 음성 분석 시스템 프론트엔드 웹 애플리케이션
+> AI音声分析システム フロントエンドウェブアプリケーション
 
-React + TypeScript 기반의 SPA로, 오디오 파일 업로드, 실시간 진행 상황 추적, 음성 분석 결과 시각화 기능을 제공합니다.
+React + TypeScriptベースのSPAで、オーディオファイルのアップロード、リアルタイムの進捗追跡、音声分析結果の視覚化機能を提供します。
 
-**📌 [전체 프로젝트 보기](https://github.com/ias-kim/genkun)**
+このプロジェクトのREDMEは日本語と韓国語で提供いたします。
+<br />
+이 프로젝트의 README는 한국어와 일본어로 제공됩니다.
 
----
+- [日本語 (Japanese)](README.md)
+- [한국어 (Korean)](README.ko.md)
 
-## 🛠 기술 스택
+<br />
 
-### Core
-- **React** 18.3.1 - UI 라이브러리
-- **TypeScript** 5.6.2 - 프로그래밍 언어
-- **Vite** 6.0.5 - 빌드 도구
-
-### Routing & State
-- **React Router DOM** 7.1.1 - SPA 라우팅
-- **Custom Hooks** - 상태 관리 및 로직 분리
-
-### Styling
-- **SCSS** - CSS 전처리기
-- **CSS Modules** - 스타일 캡슐화
-- **classnames** 2.5.1 - 동적 클래스 관리
-
-### HTTP Client
-- **Axios** 1.7.9 - RESTful API 통신
+**📌 [プロジェクト全体を見る](https://github.com/ias-kim/genkun)**
 
 ---
 
-## 🔥 주요 기능
+## 🛠 技術スタック
 
-- 백엔드 비동기 작업 상태를 반영한 UI 제공
-- 오디오 파일 업로드 및 처리 흐름 지원
-- 오디오 재생과 자막 동기화
-- 반응형 UI 구성
+### コア
+- **React** 18.3.1 - UIライブラリ
+- **TypeScript** 5.6.2 - プログラミング言語
+- **Vite** 6.0.5 - ビルドツール
+
+### ルーティング & 状態管理
+- **React Router DOM** 7.1.1 - SPAルーティング
+- **Custom Hooks** - 状態管理とロジックの分離
+
+### スタイリング
+- **SCSS** - CSSプリプロセッサ
+- **CSS Modules** - スタイルのカプセル化
+- **classnames** 2.5.1 - 動的クラス管理
+
+### HTTPクライアント
+- **Axios** 1.7.9 - RESTful API通信
 
 ---
 
-## 📂 프로젝트 구조
+## 🔥 主要機能
+
+- バックエンドの非同期タスク状態を反映したUIを提供
+- オーディオファイルのアップロードと処理フローをサポート
+- オーディオ再生と字幕の同期
+- レスポンシブUI構成
+
+---
+
+## 📂 プロジェクト構造
 
 ```
 src/
 ├── components/
 │   └── layout/
-│       ├── Layout.tsx              # 메인 레이아웃
+│       ├── Layout.tsx              # メインレイアウト
 │       └── Layout.module.scss
 ├── pages/
 │   ├── Home/
-│   │   ├── Home.tsx                # 세션 목록 페이지
+│   │   ├── Home.tsx                # セッションリストページ
 │   │   └── Home.module.scss
 │   └── SessionDetail/
-│       ├── SessionDetail.tsx       # 세션 상세 (업로드, 재생, 분석)
+│       ├── SessionDetail.tsx       # セッション詳細（アップロード、再生、分析）
 │       └── SessionDetail.module.scss
 ├── hooks/
-│   ├── useSession.ts               # 세션 관리 커스텀 훅
-│   └── useUpload.ts                # 파일 업로드 커스텀 훅
+│   ├── useSession.ts               # セッション管理カスタムフック
+│   └── useUpload.ts                # ファイルアップロードカスタムフック
 ├── services/
-│   └── api.ts                      # Axios 인스턴스 및 API 함수
+│   └── api.ts                      # AxiosインスタンスとAPI関数
 ├── scss/
-│   └── global.scss                 # 전역 CSS 변수
-├── App.tsx                         # 라우팅 설정
-└── main.tsx                        # 애플리케이션 엔트리
+│   └── global.scss                 # グローバルCSS変数
+├── App.tsx                         # ルーティング設定
+└── main.tsx                        # アプリケーションエントリー
 ```
 
 ---
 
-## 🚀 빠른 시작
+## 🚀 クイックスタート
 
-### 사전 요구사항
-- Node.js 18.x 이상
-- npm 또는 yarn
-- 백엔드 API 서버 실행 중
+### 前提条件
+- Node.js 18.x 以上
+- npm または yarn
+- バックエンドAPIサーバーが実行中であること
 
-### 설치 및 실행
+### インストールと実行
 
 ```bash
-# 1. 의존성 설치
+# 1. 依存関係のインストール
 npm install
 
-# 2. 환경 변수 설정
+# 2. 環境変数の設定
 cp .env.example .env
-# .env 파일에서 VITE_API_URL 설정
+# .envファイルでVITE_API_URLを設定
 
-# 3. 개발 서버 실행
+# 3. 開発サーバーの実行
 npm run dev
 ```
 
-개발 서버: `http://localhost:5173`
+開発サーバー: `http://localhost:5173`
 
-### 빌드
+### ビルド
 
 ```bash
-# 프로덕션 빌드
+# プロダクションビルド
 npm run build
 
-# 빌드 결과 미리보기
+# ビルド結果のプレビュー
 npm run preview
 ```
 
 ---
 
-## 📝 환경 변수
+## 📝 環境変数
 
 ```env
-# API 서버
+# APIサーバー
 VITE_API_URL=http://localhost:5000/api
 ```
 
 ---
 
-## 📊 성능 최적화
+## 📊 パフォーマンス最適化
 
-- ✅ useRef로 불필요한 리렌더 방지
-- ✅ 이벤트 리스너 Cleanup으로 메모리 누수 방지
-- ✅ CSS Modules로 스타일 충돌 방지
-- ✅ Vite 기반 빠른 HMR
-
----
-
-## 🎨 디자인
-
-- 민트/틸 계열 색상 테마 (로고와 통일)
-- Desktop/Tablet/Mobile 완전 반응형 대응
+- ✅ useRefによる不要な再レンダリングの防止
+- ✅ イベントリスナーのクリーンアップによるメモリリークの防止
+- ✅ CSS Modulesによるスタイルの衝突防止
+- ✅ Viteベースの高速HMR
 
 ---
 
-## 📚 참고 자료
+## 🎨 デザイン
 
-- [React 공식 문서](https://react.dev/)
-- [TypeScript 공식 문서](https://www.typescriptlang.org/)
-- [Vite 공식 문서](https://vitejs.dev/)
-- [React Router 공식 문서](https://reactrouter.com/)
+- ミント/ティール系のカラーテーマ（ロゴと統一）
+- Desktop/Tablet/Mobileの完全レスポンシブ対応
 
 ---
 
-## 👤 개발자
+## 📚 参考資料
+
+- [React公式ドキュメント](https://react.dev/)
+- [TypeScript公式ドキュメント](https://www.typescriptlang.org/)
+- [Vite公式ドキュメント](https://vitejs.dev/)
+- [React Router公式ドキュメント](https://reactrouter.com/)
+
+---
+
+## 👤 開発者
 
 **Gwankwon An**
 - GitHub: [@ias-kim](https://github.com/ias-kim)
 
 ---
 
-**📌 전체 프로젝트 (Backend 포함) 보기:**
+**📌 プロジェクト全体 (バックエンド含む) を見る:**
 https://github.com/ias-kim/genkun
