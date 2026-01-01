@@ -4,7 +4,7 @@
 
 React + TypeScript 기반의 SPA로, 오디오 파일 업로드, 실시간 진행 상황 추적, 음성 분석 결과 시각화 기능을 제공합니다.
 
-**📌 [전체 프로젝트 보기](https://github.com/ias-kim/genkun-platform)**
+**📌 [전체 프로젝트 보기](https://github.com/ias-kim/genkun)**
 
 ---
 
@@ -31,22 +31,10 @@ React + TypeScript 기반의 SPA로, 오디오 파일 업로드, 실시간 진�
 
 ## 🔥 주요 기능
 
-### 1. 실시간 작업 진행 추적
-- 폴링 방식으로 백엔드 작업 상태 실시간 조회
-- 진행률 바 및 상태별 시각적 피드백
-
-### 2. Drag & Drop 파일 업로드
-- HTML5 Drag & Drop API 활용
-- 파일 검증 및 업로드 진행률 표시
-
-### 3. 오디오-자막 실시간 동기화
-- HTML5 Audio API로 재생 제어
-- timeupdate 이벤트 기반 자막 활성화
-- 자막 클릭 시 해당 시간으로 이동
-
-### 4. 반응형 디자인
-- Desktop/Tablet/Mobile 완전 대응
-- Grid 기반 카드 레이아웃
+- 백엔드 비동기 작업 상태를 반영한 UI 제공
+- 오디오 파일 업로드 및 처리 흐름 지원
+- 오디오 재생과 자막 동기화
+- 반응형 UI 구성
 
 ---
 
@@ -113,51 +101,6 @@ npm run preview
 
 ---
 
-## 🖥 주요 페이지
-
-### 세션 목록 (`/`)
-- 세션 카드형 레이아웃
-- 상태별 색상 구분 (대기/완료/실패)
-- 세션 생성 버튼 (한국어/일본어)
-
-### 세션 상세 (`/session/:id`)
-- 세션 정보 표시
-- 파일 업로드 (Drag & Drop)
-- 작업 진행 상황 실시간 추적
-- 오디오 재생 및 자막 동기화
-- AI 분석 결과 시각화
-
----
-
-## 🏗 핵심 기술
-
-### Custom Hooks Pattern
-```
-useSession
-├── fetchSession (세션 조회)
-├── fetchSessions (목록 조회)
-├── createSession (생성)
-└── deleteSession (삭제)
-
-useUpload
-├── uploadFile (파일 업로드)
-├── pollJobStatus (작업 상태 폴링)
-└── cleanup (정리)
-```
-
-### 실시간 동기화 구현
-```
-Audio timeupdate 이벤트
-    ↓
-currentTime 상태 업데이트
-    ↓
-자막 세그먼트 매칭
-    ↓
-활성 자막 하이라이트 + 자동 스크롤
-```
-
----
-
 ## 📝 환경 변수
 
 ```env
@@ -200,4 +143,4 @@ VITE_API_URL=http://localhost:5000/api
 ---
 
 **📌 전체 프로젝트 (Backend 포함) 보기:**
-https://github.com/ias-kim/genkun-platform
+https://github.com/ias-kim/genkun
