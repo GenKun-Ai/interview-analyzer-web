@@ -24,10 +24,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setLoading(true);
         try {
             const response = await axios.get(`${API_BASE_URL}/users/me`, {
-                withCredentials: true,
+                withCredentials: true, // 쿠키 확인
             });
             setUser(response.data);
-        } catch (error) {
+        } catch {
             setUser(null);
         } finally {
             setLoading(false);
