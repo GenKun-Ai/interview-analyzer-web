@@ -4,12 +4,15 @@
  */
 
 import { Outlet } from 'react-router-dom';
+import { useAuth } from '../../contexts/AuthContext';
 import classNames from 'classnames/bind';
 import styles from './Layout.module.scss';
 
 const cx = classNames.bind(styles);
 
 export const Layout = () => {
+    const { user, isAuthenticated, logout } = useAuth();
+
     return (
       <div className={cx("layout")}>
         {/* Header: 상단 네비게이션 */}
@@ -21,6 +24,22 @@ export const Layout = () => {
             </a>
             <nav>
               <a href="/">세션 목록</a>
+              {isAuthenticated && user && (
+                <div className={cx("user-menu")}>
+                  <div className={cx("user-info")}>
+                    <div className={cx("user-avatar")}>
+                      {user.name.charAt(0).toUpperCase()}
+                    </div>
+                    <span className={cx("user-name")}>{user.name}</span>
+                  </div>
+                  <button
+                    onClick={logout}
+                    className={cx("logout-btn")}
+                  >
+                    로그아웃
+                  </button>
+                </div>
+              )}
             </nav>
           </div>
         </header>
