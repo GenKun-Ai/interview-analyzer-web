@@ -23,6 +23,7 @@ const apiClient: AxiosInstance = axios.create({
     headers: {
         'Content-Type': 'application/json'
     },
+    withCredentials: true, // 쿠키 자동 전송 활성화
 });
 
 // 응답 인터셉터 (예외 처리)
@@ -34,6 +35,12 @@ apiClient.interceptors.response.use(
             statusCode: error.response?.status || 500,
             error: error.response?.data?.error,
         };
+
+        // 401 에러 시 로그인 페이지로 리다이렉트
+        if (error.response?.status === 401) {
+            window.location.href = '/login';
+        }
+
         return Promise.reject(apiError);
     }
 )
