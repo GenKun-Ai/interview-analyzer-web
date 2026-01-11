@@ -1,0 +1,106 @@
+@use '../../scss/global.scss' as *;
+
+.login-container {
+    min-height: 100vh;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: linear-gradient(135deg, var(--primary-color) 0%, var(--secondary-color) 100%);
+    padding: 2rem;
+}
+
+.login-card {
+    background: white;
+    border-radius: 16px;
+    box-shadow: 0 20px 60px rgba(0, 0, 0, 0.15);
+    padding: 3rem;
+    max-width: 480px;
+    width: 100%;
+    text-align: center;
+}
+
+.logo {
+    margin-bottom: 2rem;
+    text-align: center;
+
+    .logo-image {
+        width: 200px;
+        height: auto;
+        margin: 0 auto 1rem;
+        display: block;
+
+        @media (max-width: 768px) {
+            width: 160px;
+        }
+    }
+
+    p {
+        color: var(--text-secondary);
+        font-size: 1rem;
+        margin: 0;
+    }
+}
+
+.login-content {
+    h2 {
+        font-size: 1.5rem;
+        font-weight: 600;
+        color: var(--text-primary);
+        margin-bottom: 0.5rem;
+    }
+
+    p {
+        color: var(--text-secondary);
+        margin-bottom: 2rem;
+        line-height: 1.6;
+    }
+}
+
+.google-login-btn {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0.75rem;
+    padding: 1rem 2rem;
+    font-size: 1rem;
+    font-weight: 600;
+    color: #3c4043;
+    background: white;
+    border: 2px solid #dadce0;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: #f8f9fa;
+        border-color: #3c4043;
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    &:active {
+        transform: scale(0.98);
+    }
+}
+
+.google-icon {
+    width: 24px;
+    height: 24px;
+}
+
+.loading {
+    color: white;
+    font-size: 1.2rem;
+    text-align: center;
+}
+
+// 반응형
+@media (max-width: 768px) {
+    .login-card {
+        padding: 2rem;
+    }
+
+    .logo h1 {
+        font-size: 2.5rem;
+    }
+}
