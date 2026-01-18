@@ -1,13 +1,11 @@
 # docker-compose.prod.yml - 프로덕션 배포용
-version: '3.8'
-
 services:
   frontend:
     image: sgwar/genkun-frontend:latest  # DockerHub 이미지
     container_name: genkun-frontend
     restart: unless-stopped
-    ports:
-      - "80"      # HTTP
+    expose:
+      - "80"      # 내부망 연결
     environment:
       NODE_ENV: production
       VITE_API_BASE_URL: ${VITE_API_BASE_URL}
@@ -24,4 +22,4 @@ services:
 
 networks:
   genkun-network:
-    driver: bridge
+    external: true
