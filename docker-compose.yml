@@ -1,0 +1,19 @@
+# docker-compose.yml - 로컬 개발용
+version: '3.8'
+
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        VITE_API_BASE_URL: ${VITE_API_BASE_URL:-http://localhost:5000}
+    container_name: genkun-frontend-dev
+    ports:
+      - "3000:80"
+    environment:
+      - NODE_ENV=development
+    restart: unless-stopped
+    volumes:
+      # 개발 시 소스 변경 반영을 위해 볼륨 마운트 (선택사항)
+      - ./dist:/usr/share/nginx/html:ro
