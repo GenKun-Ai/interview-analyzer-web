@@ -1,0 +1,50 @@
+name: Deploy Frontend (rsync)
+
+on:
+  push:
+    branches: ["dev"]
+  release:
+    types: ["published"]
+  workflow_dispatch:
+
+jobs:
+  build-and-deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js LTS
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+          cache: 'npm'
+
+      - name: Create .env.production
+        run: |
+          echo "VITE_API_BASE_URL=${{ secrets.VITE_API_BASE_URL }}" > .env.production
+
+      - name: Install dependencies
+        run: |
+          rm -rf node_modules package-lock.json
+          npm install
+
+      - name: Build project
+        run: npm run build
+
+      - name: Deploy to EC2 via rsync
+        uses: burnett01/rsync-deployments@7.0.1
+        with:
+          switches: -avz --delete
+          path: dist/
+          remote_path: /usr/share/nginx/html/
+          remote_host: ${{ secrets.EC2_HOST }}
+          remote_user: ${{ secrets.EC2_USER }}
+          remote_key: ${{ secrets.EC2_KEY }}
+
+      - name: Health check
+        run: |
+          echo "Health check on http://${{ secrets.EC2_HOST }}"
+          sleep 3
+          curl -f http://${{ secrets.EC2_HOST }} || echo "Healthcheck failed"
