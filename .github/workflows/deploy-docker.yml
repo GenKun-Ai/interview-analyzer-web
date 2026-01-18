@@ -79,16 +79,16 @@ jobs:
             fi
 
             # docker-compose.prod.yml 다운로드 (GitHub에서)
-            curl -o docker-compose.prod.yml https://raw.githubusercontent.com/${{ github.repository }}/main/docker-compose.prod.yml
+            curl -o docker-compose.prod.yml https://raw.githubusercontent.com/${{ github.repository }}/dev/docker-compose.prod.yml
 
             # Docker Hub에서 최신 이미지 pull
-            sudo docker-compose -f docker-compose.prod.yml pull frontend < /dev/null
+            docker compose -f docker-compose.prod.yml pull frontend
 
             # 프론트엔드 컨테이너 재시작
-            sudo docker-compose -f docker-compose.prod.yml up -d frontend < /dev/null
+            docker compose -f docker-compose.prod.yml up -d frontend
 
             # 사용하지 않는 이미지 삭제
-            sudo docker image prune -f < /dev/null
+            docker image prune -f
 
             echo "✅ Frontend deployment completed!"
 
