@@ -19,7 +19,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         checkAuth();
     }, []);
 
-    // 인증 상태 확인 (GET /users/me)
+    // 인증 상태 확인 (GET /api/users/me)
     const checkAuth = async () => {
         setLoading(true);
         try {
