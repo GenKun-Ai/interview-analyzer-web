@@ -7,6 +7,11 @@
     --primary-light: #5eead4;
     --primary-dark: #0d9488;
 
+    /* 보조 컬러 */
+    --secondary: #06b6d4;
+    --secondary-light: #67e8f9;
+    --secondary-dark: #0e7490;
+
     /* 헤더 - 딥 네이비 */
     --header-bg: #0f172a;
     --header-text: #f8fafc;
@@ -19,6 +24,8 @@
 
     /* 텍스트 & 배경 */
     --text: #1e293b;
+    --text-primary: #1e293b;
+    --text-secondary: #64748b;
     --text-light: #64748b;
     --bg: #f8fafc;
     --border: #e2e8f0;
