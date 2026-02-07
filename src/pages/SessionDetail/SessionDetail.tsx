@@ -131,7 +131,10 @@ export const SessionDetail = () => {
     if (!id || !selectedFile) return;
 
     try {
-      await uploadFile(id, selectedFile);
+      await uploadFile(id, selectedFile, () => {
+        // Job 완료/실패 시 세션 재조회 (transcript, analysis 포함)
+        fetchSession(id);
+      });
       setSelectedFile(null);
       await fetchSession(id);
     } catch (err) {
@@ -403,19 +406,91 @@ export const SessionDetail = () => {
       {currentSession.analysis && (
         <div className={cx("analysis-card")}>
           <h3>분석 결과</h3>
-          <p>총점: {currentSession.analysis.overallScore}</p>
-          <h4>추천사항 :</h4>
-          <ul>
-            {currentSession.analysis.recommendations.map((rec, idx) => (
-              <li key={idx}>{rec}</li>
-            ))}
-          </ul>
-          <h4>키워드 매치</h4>
-          <ul>
-            {currentSession.analysis.structuralAnalysis.keywordMatches.map((keyword, idx) => (
-                <li key={idx}>{keyword}</li>
-            ))}
-          </ul>
+
+          {/* 총점 */}
+          <div className={cx("score-section")}>
+            <span className={cx("score-label")}>총점</span>
+            <span className={cx("score-value")}>{currentSession.analysis.overallScore}</span>
+            <span className={cx("score-max")}> / 100</span>
+          </div>
+
+          {/* Q&A 피드백 */}
+          {currentSession.analysis.structuralAnalysis?.questionResponsePairs?.length > 0 && (
+            <>
+              <h4>질문별 피드백</h4>
+              <div className={cx("qa-list")}>
+                {currentSession.analysis.structuralAnalysis.questionResponsePairs.map((pair, idx) => (
+                  <div key={idx} className={cx("qa-item")}>
+                    <div className={cx("qa-question")}>
+                      <strong>Q: </strong>{pair.question?.text}
+                    </div>
+                    <div className={cx("qa-response")}>
+                      <strong>A: </strong>{pair.response?.text}
+                    </div>
+                    <div className={cx("qa-feedback")}>
+                      <span className={cx("appropriateness")}>
+                        적절성: {Math.round((pair.appropriateness || 0) * 100)}%
+                      </span>
+                      <p>{pair.feedback}</p>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* 말하기 습관 */}
+          {currentSession.analysis.speechHabits && (
+            <>
+              <h4>말하기 습관</h4>
+              <div className={cx("speech-habits")}>
+                <div className={cx("habit-item")}>
+                  <span className={cx("label")}>말하기 속도:</span>
+                  <span>{currentSession.analysis.speechHabits.speakingRate} WPM</span>
+                </div>
+                <div className={cx("habit-item")}>
+                  <span className={cx("label")}>평균 정지 시간:</span>
+                  <span>{currentSession.analysis.speechHabits.averagePauseDuration?.toFixed(1)}초</span>
+                </div>
+                {currentSession.analysis.speechHabits.fillerWords?.length > 0 && (
+                  <div className={cx("habit-item")}>
+                    <span className={cx("label")}>불필요한 추임새:</span>
+                    <span>
+                      {currentSession.analysis.speechHabits.fillerWords.map(
+                        (fw) => `${fw.word}(${fw.count}회)`
+                      ).join(', ')}
+                    </span>
+                  </div>
+                )}
+              </div>
+            </>
+          )}
+
+          {/* 키워드 매치 */}
+          {currentSession.analysis.structuralAnalysis?.keywordMatches?.length > 0 && (
+            <>
+              <h4>키워드 매치</h4>
+              <div className={cx("keyword-list")}>
+                {currentSession.analysis.structuralAnalysis.keywordMatches.map((kw, idx) => (
+                  <span key={idx} className={cx("keyword-tag")}>
+                    {kw.keyword} ({kw.count}회)
+                  </span>
+                ))}
+              </div>
+            </>
+          )}
+
+          {/* 추천사항 */}
+          {currentSession.analysis.recommendations?.length > 0 && (
+            <>
+              <h4>개선 추천사항</h4>
+              <ul className={cx("recommendations")}>
+                {currentSession.analysis.recommendations.map((rec, idx) => (
+                  <li key={idx}>{rec}</li>
+                ))}
+              </ul>
+            </>
+          )}
         </div>
       )}
     </div>

@@ -21,9 +21,15 @@ export const useUpload = () => {
         }
     }, []);
 
+    // 완료 콜백 저장
+    const onCompleteRef = useRef<(() => void) | null>(null);
+
     // 작업 상태 폴링 시작
-    const startPolling = useCallback((sessionId: string) => {
+    const startPolling = useCallback((sessionId: string, onComplete?: () => void) => {
         stopPolling();
+        if (onComplete) {
+            onCompleteRef.current = onComplete;
+        }
 
         pollingRef.current = setInterval(async () => {
             try {
@@ -31,9 +37,10 @@ export const useUpload = () => {
                 setJobStatus(status);
                 setProgress(status.progress);
 
-                // 완료 또는 실패시 폴링 중지
+                // 완료 또는 실패시 폴링 중지 + 완료 콜백 호출
                 if (status.jobState === 'completed' || status.jobState === 'failed') {
                     stopPolling();
+                    onCompleteRef.current?.();
                 }
             } catch (err: unknown) {
                 if (err instanceof Error) {
@@ -47,7 +54,7 @@ export const useUpload = () => {
     }, [stopPolling]);
 
     // 파일 업로드
-    const uploadFile = useCallback(async (sessionId: string, file: File) => {
+    const uploadFile = useCallback(async (sessionId: string, file: File, onComplete?: () => void) => {
         try {
             setUploading(true);
             setError(null);
@@ -55,8 +62,8 @@ export const useUpload = () => {
 
             const result = await api.uploadFile(sessionId, file);
 
-            // 업로드 성공 -> 폴링 시작
-            startPolling(sessionId);
+            // 업로드 성공 -> 폴링 시작 (완료 시 콜백 호출)
+            startPolling(sessionId, onComplete);
 
             return result;
         } catch (err: unknown) {

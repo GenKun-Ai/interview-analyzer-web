@@ -56,10 +56,17 @@ export interface QuestionResponsePair {
     feedback: string;
 }
 
+export interface KeywordMatch {
+    keyword: string;
+    count: number;
+    segments: number[];
+    relevance: number;
+}
+
 export interface StructuralAnalysis {
     questionResponsePairs: QuestionResponsePair[];
     appropriatenessScore: number;
-    keywordMatches: string[]; 
+    keywordMatches: KeywordMatch[];
 }
 
 export interface SilencePeriod {
