@@ -3,12 +3,11 @@
  */
 
 import { createContext, useContext, useState, useEffect, type ReactNode } from 'react';
-import axios from 'axios';
 import type { AuthContextType, User } from '../types/auth';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
@@ -19,25 +18,15 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         checkAuth();
     }, []);
 
-    // 인증 상태 확인 (GET /api/users/me)
+    // TODO: Google OAuth 임시 비활성화 — 목 유저로 자동 로그인
     const checkAuth = async () => {
         setLoading(true);
-        try {
-            const response = await axios.get(`${API_BASE_URL}/users/me`, {
-                withCredentials: true, // 쿠키 확인
-            });
-            setUser(response.data);
-        } catch {
-            setUser(null);
-        } finally {
-            setLoading(false);
-        }
+        setUser({ id: 'guest', email: 'guest@genkun.app', name: 'Guest', role: 'user', createAt: '', updatedAt: '' });
+        setLoading(false);
     };
 
-    // Google OAuth 로그인 시작
-    const login = () => {
-        window.location.href = `${API_BASE_URL}/users/google`;
-    };
+    // Google OAuth 로그인 시작 (임시 비활성화)
+    const login = () => {};
 
     // 로그아웃
     const logout = () => {
