@@ -9,6 +9,42 @@ import type { ApiError } from "../types/session";
 import { useAuth } from "../contexts/AuthContext";
 import * as api from '../services/api';
 
+const MOCK_SESSIONS: Session[] = [
+    {
+        id: 'mock-1',
+        language: 'ko',
+        status: 'COMPLETED',
+        description: '한국어 면접 연습 - 자기소개',
+        originalAudioPath: '',
+        audioDuration: 183,
+        deleteAfterAnalysis: false,
+        createAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+        updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 2).toISOString(),
+    },
+    {
+        id: 'mock-2',
+        language: 'ja',
+        status: 'COMPLETED',
+        description: '日本語面接練習 - 志望動機',
+        originalAudioPath: '',
+        audioDuration: 240,
+        deleteAfterAnalysis: false,
+        createAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+        updatedAt: new Date(Date.now() - 1000 * 60 * 60 * 24).toISOString(),
+    },
+    {
+        id: 'mock-3',
+        language: 'ko',
+        status: 'ANALYZING',
+        description: '한국어 면접 연습 - 직무 역량',
+        originalAudioPath: '',
+        audioDuration: 312,
+        deleteAfterAnalysis: false,
+        createAt: new Date(Date.now() - 1000 * 60 * 30).toISOString(),
+        updatedAt: new Date(Date.now() - 1000 * 60 * 10).toISOString(),
+    },
+];
+
 const extractErrorMessage = (err: unknown): string => {
     if (err instanceof Error) return err.message;
     if (err && typeof err === 'object' && 'message' in err) return String((err as ApiError).message);
@@ -28,7 +64,7 @@ export const useSession = () => {
     // 세션 목록 조회
     const fetchSessions = useCallback(async () => {
         if (isGuest) {
-            setSessions([]);
+            setSessions(MOCK_SESSIONS);
             return;
         }
         try {
@@ -59,6 +95,21 @@ export const useSession = () => {
 
     // 세션 생성
     const createSession = useCallback(async (req?: CreateSessionRequest) => {
+        if (isGuest) {
+            const mockNew: Session = {
+                id: `mock-${Date.now()}`,
+                language: req?.language ?? 'ko',
+                status: 'CREATED',
+                description: req?.description ?? '새 세션',
+                originalAudioPath: '',
+                audioDuration: 0,
+                deleteAfterAnalysis: false,
+                createAt: new Date().toISOString(),
+                updatedAt: new Date().toISOString(),
+            };
+            setSessions((prev) => [mockNew, ...prev]);
+            return mockNew;
+        }
         try {
             setLoading(true);
             setError(null);
@@ -71,7 +122,7 @@ export const useSession = () => {
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [isGuest]);
 
     // 세션 삭제
     const deleteSession = useCallback(async (id: string) => {
