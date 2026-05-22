@@ -5,9 +5,20 @@
 
 import { useCallback, useState } from "react";
 import type { CreateSessionRequest, Session } from "../types/session";
+import type { ApiError } from "../types/session";
+import { useAuth } from "../contexts/AuthContext";
 import * as api from '../services/api';
 
+const extractErrorMessage = (err: unknown): string => {
+    if (err instanceof Error) return err.message;
+    if (err && typeof err === 'object' && 'message' in err) return String((err as ApiError).message);
+    return '알 수 없는 에러';
+};
+
 export const useSession = () => {
+    const { user } = useAuth();
+    const isGuest = user?.id === 'guest';
+
     // 상태관리
     const [sessions, setSessions] = useState<Session[]>([]);
     const [currentSession, setCurrentSession] = useState<Session | null>(null);
@@ -16,21 +27,21 @@ export const useSession = () => {
 
     // 세션 목록 조회
     const fetchSessions = useCallback(async () => {
+        if (isGuest) {
+            setSessions([]);
+            return;
+        }
         try {
             setLoading(true);
             setError(null);
             const data = await api.getSessionList();
             setSessions(data);
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('알 수 없는 에러');
-            }
+            setError(extractErrorMessage(err));
         } finally {
             setLoading(false);
         }
-    }, []);
+    }, [isGuest]);
 
     // 세션 상세 조회
     const fetchSession = useCallback(async (id: string) => {
@@ -40,11 +51,7 @@ export const useSession = () => {
             const data = await api.getSession(id);
             setCurrentSession(data);
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('알 수 없는 에러');
-            }
+            setError(extractErrorMessage(err));
         } finally {
             setLoading(false);
         }
@@ -59,11 +66,7 @@ export const useSession = () => {
             setSessions((prev) => [newSession, ...prev]);
             return newSession;
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('알 수 없는 에러');
-            }
+            setError(extractErrorMessage(err));
             throw err;
         } finally {
             setLoading(false);
@@ -78,11 +81,7 @@ export const useSession = () => {
             await api.deleteSession(id);
             setSessions((prev) => prev.filter((s) => s.id !== id));
         } catch (err: unknown) {
-            if (err instanceof Error) {
-                setError(err.message);
-            } else {
-                setError('알 수 없는 에러');
-            }
+            setError(extractErrorMessage(err));
         } finally {
             setLoading(false);
         }

@@ -7,6 +7,7 @@
 import { useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { useSession } from '../../hooks/useSession';
+import { useAuth } from '../../contexts/AuthContext';
 import classNames from "classnames/bind";
 import styles from './Home.module.scss';
 
@@ -14,6 +15,8 @@ const cx = classNames.bind(styles);
 
 export const Home = () => {
     const navigate = useNavigate();
+    const { user } = useAuth();
+    const isGuest = user?.id === 'guest';
     const { sessions, loading, error, fetchSessions, createSession } = useSession();
 
     // 컴포넌트 마운트 시 세션 목록 로드
@@ -57,7 +60,9 @@ export const Home = () => {
 
             {/* 세션 목록 */}
             {!loading && sessions.length === 0 && (
-                <div className={cx('empty')}>세션이 없습니다</div>
+                <div className={cx('empty')}>
+                    {isGuest ? '로그인하면 세션을 생성할 수 있습니다' : '세션이 없습니다'}
+                </div>
             )}
 
             <div className={cx('sessions')}>
