@@ -5,6 +5,7 @@ import { Layout } from "./components/layout/Layout";
 import { Home } from "./pages/Home/Home";
 import { SessionDetail } from "./pages/SessionDetail/SessionDetail";
 import { Login } from "./pages/Login/Login";
+import { AuthCallback } from "./pages/AuthCallback/AuthCallback";
 import "./App.css";
 
 function App() {
@@ -14,6 +15,9 @@ function App() {
         <Routes>
           {/* 로그인 페이지 */}
           <Route path="/login" element={<Login />} />
+
+          {/* Google OAuth 콜백 */}
+          <Route path="/auth/callback" element={<AuthCallback />} />
 
           {/* Layout을 감싸는 라우트 (인증 필요) */}
           <Route

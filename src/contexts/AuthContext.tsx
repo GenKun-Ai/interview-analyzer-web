@@ -7,7 +7,7 @@ import type { AuthContextType, User } from '../types/auth';
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-// const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000';
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000/api';
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
     const [user, setUser] = useState<User | null>(null);
@@ -18,15 +18,30 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         checkAuth();
     }, []);
 
-    // TODO: Google OAuth 임시 비활성화 — 목 유저로 자동 로그인
+    // 쿠키의 JWT로 현재 유저 정보 조회
     const checkAuth = async () => {
         setLoading(true);
-        setUser({ id: 'guest', email: 'guest@genkun.app', name: 'Guest', role: 'user', createAt: '', updatedAt: '' });
-        setLoading(false);
+        try {
+            const res = await fetch(`${API_BASE_URL}/users/me`, {
+                credentials: 'include', // 쿠키 포함
+            });
+            if (res.ok) {
+                const userData: User = await res.json();
+                setUser(userData);
+            } else {
+                setUser(null);
+            }
+        } catch {
+            setUser(null);
+        } finally {
+            setLoading(false);
+        }
     };
 
-    // Google OAuth 로그인 시작 (임시 비활성화)
-    const login = () => {};
+    // Google OAuth 로그인 시작 → 백엔드로 리다이렉트
+    const login = () => {
+        window.location.href = `${API_BASE_URL}/users/google`;
+    };
 
     // 로그아웃
     const logout = () => {
